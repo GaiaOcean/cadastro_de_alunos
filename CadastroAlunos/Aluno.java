@@ -30,7 +30,10 @@ public class Aluno extends Pessoa {
         setCurso(curso);
         setPeriodo(periodo);
     }
-
+    public String getRg(){
+        String rg = getId();
+        return rg;
+    }
     private void setRa(String ra){
         this.ra = ra;
     }

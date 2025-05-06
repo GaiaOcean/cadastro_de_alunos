@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=ArquivoTexto
+comment1.params=armazenamento\ nomeArquivo
+comment1.target=void\ salvarTxt(Armazenagem,\ java.lang.String)
+comment2.params=armazenamento\ nomeArquivo
+comment2.target=void\ carregarTxt(Armazenagem,\ java.lang.String)
+numComments=3

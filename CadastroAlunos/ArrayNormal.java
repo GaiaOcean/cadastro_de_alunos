@@ -18,6 +18,15 @@ public class ArrayNormal implements Armazenagem
        this.cadastrados = 0;
     }
     
+    public  Aluno[] getAlunos(){
+        int arraySize = getTamanho();
+        Aluno[] alunos = new Aluno[arraySize];
+        for (int i = 0; i <arraySize; i++) {
+            alunos[i] = lista[i]; 
+        }
+        return  alunos;
+    }
+    
     public int getTamanho(){
         return cadastrados;
     }

@@ -16,6 +16,9 @@ public class ListaArray implements Armazenagem
    private ArrayList <Aluno> getLista(){
        return lista;
    }
+   public Aluno[] getAlunos(){
+       return lista.toArray(new Aluno[0]);
+   }
    
    public int getTamanho(){
        return lista.size();
@@ -75,10 +78,12 @@ public class ListaArray implements Armazenagem
             System.out.println("Não existem alunos cadastrados"); 
        }
    }
+   
+   
+}
 
    
    
    
    
    
-}

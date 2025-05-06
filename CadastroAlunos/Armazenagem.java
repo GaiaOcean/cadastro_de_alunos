@@ -12,4 +12,5 @@ public interface Armazenagem
    public void mostrarLista();
    public int getTamanho();
    public int buscarRa(String ra);
+   public Aluno[] getAlunos();
 }

@@ -11,4 +11,6 @@ comment4.params=
 comment4.target=int\ getTamanho()
 comment5.params=ra
 comment5.target=int\ buscarRa(java.lang.String)
-numComments=6
+comment6.params=
+comment6.target=Aluno[]\ getAlunos()
+numComments=7

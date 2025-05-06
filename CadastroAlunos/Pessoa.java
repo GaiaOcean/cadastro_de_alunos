@@ -26,7 +26,7 @@ public class Pessoa {
         setIdade(idade);
         setId(id);
     }
-
+    
     private void setNome(String nome){
         this.nome = new NomePessoa(nome);
     }
