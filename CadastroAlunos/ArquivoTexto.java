@@ -22,7 +22,7 @@ public class ArquivoTexto {
                     writer.write(aluno.getRg() + ";");
                     writer.write(aluno.getRa() + ";");
                     writer.write(aluno.getCurso() + ";");
-                    writer.write(aluno.getPeriodo() + "\n");  // Write on a single line, using semicolons as delimiters
+                    writer.write(aluno.getPeriodo() + "\n"); 
                 }
             }
             System.out.println("Alunos salvos com sucesso em: " + nomeArquivo);
@@ -41,10 +41,10 @@ public class ArquivoTexto {
     
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = br.readLine()) != null) {  // Read line by line
-                String[] tokens = line.split(";");  // Split by the semicolon delimiter
+            while ((line = br.readLine()) != null) {  
+                String[] tokens = line.split(";");  
                 
-                if (tokens.length == 6) {  // We expect 6 fields per student
+                if (tokens.length == 6) { //cada aluno tem 6 fields
                     String nome = tokens[0];
                     int idade = Integer.parseInt(tokens[1]);
                     String rg = tokens[2];
@@ -52,9 +52,9 @@ public class ArquivoTexto {
                     String curso = tokens[4];
                     int periodo = Integer.parseInt(tokens[5]);
                     
-                    // Create a new student object and add it to the storage
+                    
                     Aluno aluno = new Aluno(nome, idade, rg, ra, curso, periodo);
-                    armazenamento.inserirAluno(aluno);  // Add the student to the storage
+                    armazenamento.inserirAluno(aluno);
                 }
             }
             System.out.println("Alunos carregados com sucesso de: " + nomeArquivo);
