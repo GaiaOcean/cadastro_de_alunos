@@ -8,9 +8,9 @@ import java.util.StringTokenizer;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-public class ArquivoTexto {
+public class ArquivoTexto implements IPersistencia{
 
-    public static void salvarTxt(Armazenagem armazenamento, String nomeArquivo) {
+    public void salvarTxt(Armazenagem armazenamento, String nomeArquivo) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
             Aluno[] alunos = armazenamento.getAlunos();
             int nAluno = 0;
@@ -31,7 +31,7 @@ public class ArquivoTexto {
         }
     }
 
-   public static void carregarTxt(Armazenagem armazenamento, String nomeArquivo) {
+   public void carregarTxt(Armazenagem armazenamento, String nomeArquivo) {
         File file = new File(nomeArquivo);
         
         if (!file.exists()) {
