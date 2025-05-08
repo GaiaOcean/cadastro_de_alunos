@@ -11,7 +11,7 @@ public class TestaArrayNormal
    public static void main(String args[]){
        int capacidade  = 3;
        Armazenagem alunos = new ArrayNormal(capacidade);
-       Aluno aluno1 = new Aluno("João", 20, "123", "2023001", "Computer Science", 2);
+       /*Aluno aluno1 = new Aluno("João", 20, "123", "2023001", "Computer Science", 2);
        alunos.inserirAluno(aluno1);
        Aluno aluno2 =  new Aluno("Grazi", 19, "1111", "727727", "Computer Science", 2);
        alunos.inserirAluno(aluno2);
@@ -24,7 +24,9 @@ public class TestaArrayNormal
        System.out.println("Depois de Ter removido");
        System.out.println("Adiiconando um  novo aluno");
        Aluno aluno4 = new Aluno("Antonio", 19, "1111", "838293", "Computer Science",2);
-       alunos.inserirAluno(aluno4);
+       alunos.inserirAluno(aluno4);*/
+       //ArquivoTexto.salvarTxt(alunos,"alunos2.txt");
+       ArquivoTexto.carregarTxt(alunos,"alunos2.txt");
        alunos.mostrarLista();
        
     }
