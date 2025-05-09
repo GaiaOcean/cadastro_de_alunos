@@ -12,6 +12,7 @@ public class TestaArrayNormal
        int capacidade  = 3;
        Armazenagem alunos = new ArrayNormal(capacidade);
        ArquivoTexto arquivo = new ArquivoTexto();
+       InputException input = new InputException();
        /*Aluno aluno1 = new Aluno("João", 20, "123", "2023001", "Computer Science", 2);
        alunos.inserirAluno(aluno1);
        Aluno aluno2 =  new Aluno("Grazi", 19, "1111", "727727", "Computer Science", 2);
@@ -27,8 +28,9 @@ public class TestaArrayNormal
        Aluno aluno4 = new Aluno("Antonio", 19, "1111", "838293", "Computer Science",2);
        alunos.inserirAluno(aluno4);*/
        //ArquivoTexto.salvarTxt(alunos,"alunos2.txt");
-       arquivo.carregarTxt(alunos,"alunos2.txt");
-       alunos.mostrarLista();
+       //arquivo.carregarTxt(alunos,"alunos2.txt");
+       //alunos.mostrarLista();
+
        
     }
 }

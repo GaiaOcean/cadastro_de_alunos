@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=InputException
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ InputException\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=numero
+comment1.target=boolean\ validarNumero(java.lang.String)
+comment1.text=\r\n\ .Verifica\ se\ o\ usu\u00E1rio\ digitou\ apenas\ n\u00FAmeros\r\n\ @return\ boolean\ value\r\n
+comment2.params=nomeArquivo
+comment2.target=boolean\ validarNomeFile(java.lang.String)
+numComments=3
