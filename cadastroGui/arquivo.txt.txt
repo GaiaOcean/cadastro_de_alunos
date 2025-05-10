@@ -1,0 +1,6 @@
+Nome: Grazielle
+Idade: 1
+Id: 2
+Ra: 3
+Curso: CC
+Periodo: 1

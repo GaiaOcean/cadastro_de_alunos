@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=InputException
+comment1.params=msg
+comment1.target=InputException(java.lang.String)
+comment2.params=input\ inputName
+comment2.target=java.lang.String\ validarNumeroString(java.lang.String,\ java.lang.String)
+comment3.params=nomeArquivo
+comment3.target=java.lang.String\ validarNomeFile(java.lang.String)
+numComments=4
