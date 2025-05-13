@@ -122,9 +122,11 @@ public class Home extends JFrame {
         btnRemoverAluno.setBackground(new Color(86, 136, 219));
         btnRemoverAluno.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                 RA = JOptionPane.showInputDialog("Digite o RA do aluno que deseja remover:");
                  
+                 RA = JOptionPane.showInputDialog("Digite o RA do aluno que deseja remover:");
+                
                  boolean removido = armazenador.removerAluno(RA);
+                
                  if(removido){
                        JOptionPane.showMessageDialog(null, "Aluno removido com Sucesso");
                  }else{
