@@ -10,7 +10,7 @@ public class ListaArray implements Armazenagem
    private ArrayList <Aluno> lista;
    
    public ListaArray(){
-       setLista(new <Aluno>ArrayList());
+      setLista(new ArrayList<Aluno>());
    }
    
    private ArrayList <Aluno> getLista(){

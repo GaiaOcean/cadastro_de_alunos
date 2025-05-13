@@ -81,7 +81,7 @@ public class Home extends JFrame {
                         JOptionPane.showMessageDialog(null, "Quantidade inválida.");
                         return;
                     }
-                } else if (tipo.equals("ArrayLista") || tipo.equals(null)){
+                } else if (tipo.equals("ArrayList") || tipo.equals(null)){
                     armazenador = new ListaArray();
                 }
 
@@ -105,8 +105,14 @@ public class Home extends JFrame {
                     return;
                 }
                 ArquivoTexto arquivo = new ArquivoTexto();
-                arquivo.salvarTxt(armazenador, nomeArquivo.trim());
-                JOptionPane.showMessageDialog(null, "Arquivo salvo com sucesso!");
+                try{
+                    arquivo.salvarTxt(armazenador, nomeArquivo.trim());
+                    JOptionPane.showMessageDialog(null, "Arquivo salvo com sucesso!");
+                }catch(Exception ex ){
+                    JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo!");
+                }
+            
+                
             }
         });
 
@@ -123,14 +129,17 @@ public class Home extends JFrame {
                     JOptionPane.showMessageDialog(null, "Nome de arquivo inválido.");
                     return;
                 }
-                if (armazenador == null || nomeArquivo == null) {
-                    JOptionPane.showMessageDialog(null, "Você deve cadastrar e salvar primeiro");
-                    return;
-                }
-
+        
                 ArquivoTexto arquivo = new ArquivoTexto();
-                arquivo.carregarTxt(armazenador, nomeArquivo.trim());
-                JOptionPane.showMessageDialog(null, "Alunos recuperados com sucesso!");
+                try{
+                   arquivo.carregarTxt(armazenador, nomeArquivo);
+                   JOptionPane.showMessageDialog(null, "Alunos recuperados com sucesso!");
+                   armazenador.mostrarLista();
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Erro ao recuperar Alunos!");
+                    ex.printStackTrace(); 
+                } 
+                  
             }
         });
 
