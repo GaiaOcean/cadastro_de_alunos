@@ -14,7 +14,9 @@ public class Home extends JFrame {
     private JPanel contentPane;
     private Armazenagem armazenador = null;
     private String nomeArquivo = null;
-
+    private CadAlunos janelaCadastro = null;
+    private String RA = null;
+    
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
@@ -68,41 +70,69 @@ public class Home extends JFrame {
         }
 
         JButton btnCadastrar = new JButton("Cadastrar");
-        btnCadastrar.setBounds(222, 50, 136, 34);
+        btnCadastrar.setBounds(222, 15, 136, 34);
         panel.add(btnCadastrar);
         btnCadastrar.setForeground(Color.WHITE);
         btnCadastrar.setFont(new Font("Calibri", Font.BOLD, 13));
         btnCadastrar.setBackground(new Color(86, 136, 219));
         btnCadastrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String[] options = {"ArrayNormal", "ArrayLista"};
                 
-                String tipo = (String) JOptionPane.showInputDialog(null,
-                        "Escolha o tipo de armazenagem",
-                        "Tipo de Armazenagem",
-                        JOptionPane.QUESTION_MESSAGE,
-                        null,
-                        options,
-                        options[0]);
-
-                if (tipo.equals("ArrayNormal")) {
-                    String inputQtd = JOptionPane.showInputDialog("Digite a quantidade de alunos:");
-                    try {
-                        int qtd = Integer.parseInt(inputQtd);
-                        armazenador = new ArrayNormal(qtd);
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Quantidade inválida.");
-                        return;
+                if(armazenador == null){
+                    String[] options = {"ArrayNormal", "ArrayLista"};
+                
+                    String tipo = (String) JOptionPane.showInputDialog(null,
+                            "Escolha o tipo de armazenagem",
+                            "Tipo de Armazenagem",
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            options,
+                            options[0]);
+    
+                    if (tipo.equals("ArrayNormal")) {
+                        String inputQtd = JOptionPane.showInputDialog("Digite a quantidade de alunos:");
+                        try {
+                            int qtd = Integer.parseInt(inputQtd);
+                            armazenador = new ArrayNormal(qtd);
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null, "Quantidade inválida.");
+                            return;
+                        }
+                    } else if (tipo.equals("ArrayLista") || tipo.equals(null)){
+                        armazenador = new ListaArray();
                     }
-                } else if (tipo.equals("ArrayLista") || tipo.equals(null)){
-                    armazenador = new ListaArray();
+    
+                    CadAlunos cadastro = new CadAlunos(armazenador);
+                    cadastro.setVisible(true);
+                    
+                }else{
+                    janelaCadastro = new CadAlunos(armazenador);
+                    janelaCadastro.setVisible(true);
                 }
-
-                CadAlunos cadastro = new CadAlunos(armazenador);
-                cadastro.setVisible(true);
+                
         
-    }
-});
+        }
+    });
+
+        JButton btnRemoverAluno = new JButton("Remover Aluno");
+        btnRemoverAluno.setBounds(222, 55, 136, 34);
+        panel.add(btnRemoverAluno);
+        btnRemoverAluno.setForeground(Color.WHITE);
+        btnRemoverAluno.setFont(new Font("Calibri", Font.BOLD, 13));
+        btnRemoverAluno.setBackground(new Color(86, 136, 219));
+        btnRemoverAluno.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                 RA = JOptionPane.showInputDialog("Digite o RA do aluno que deseja remover:");
+                 
+                 boolean removido = armazenador.removerAluno(RA);
+                 if(removido){
+                       JOptionPane.showMessageDialog(null, "Aluno removido com Sucesso");
+                 }else{
+                       JOptionPane.showMessageDialog(null, "Ra " + RA + "não encontrado");
+                 }
+                
+            }
+        });
 
         JButton btnSalvar = new JButton("Salvar");
         btnSalvar.setBounds(222, 100, 136, 34);

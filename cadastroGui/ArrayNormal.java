@@ -32,20 +32,24 @@ public class ArrayNormal implements Armazenagem
     public int getTamanho(){
         return cadastrados;
     }
-    public void inserirAluno(Aluno aluno){
+    
+    public boolean inserirAluno(Aluno aluno){
+        
         if(capacidade == cadastrados){
             JOptionPane.showMessageDialog(null, "Não há mais espaço para cadastro");
+            return false;
         }else{
            lista[cadastrados] = aluno;
            cadastrados++;
            //System.out.println("Aluno " + aluno.getNome() + " cadastrado com sucesso.");
         }
+        return true;
     }
-    public void removerAluno(String ra){
+    public boolean removerAluno(String ra){
         int pos = buscarRa(ra);
         
         if(pos == -1){
-            System.out.println("Ra " + ra + "não encontrado");
+             return false;
         }else{
             
             for(int i = pos; i < cadastrados-1; i++){
@@ -53,6 +57,8 @@ public class ArrayNormal implements Armazenagem
             }
             cadastrados--;
         }
+        
+        return true;
     }
     
     public int buscarRa(String ra){

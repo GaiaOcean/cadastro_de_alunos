@@ -30,16 +30,21 @@ public class ListaArray implements Armazenagem
    private void setLista(ArrayList <Aluno> lista){
        this.lista = lista;
    }
-   public void inserirAluno(Aluno aluno){
+   public boolean inserirAluno(Aluno aluno){
        lista.add(aluno);
+       return true;
    }
    
-   public void removerAluno(String ra){
+   public boolean removerAluno(String ra){
        int pos = buscarRa(ra);
 
        if(pos != -1){
            lista.remove(pos);
+       }else{
+             return false;
        }
+       
+       return true;
    }
    
    public int buscarRa(String ra){

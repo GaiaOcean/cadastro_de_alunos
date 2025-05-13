@@ -77,7 +77,7 @@ public class CadAlunos extends JFrame {
                     int periodo = Integer.parseInt(txtPeriodo.getText());
 
                     Aluno aluno = new Aluno(nome, idade, rg, ra, curso, periodo);
-                    armazenador.inserirAluno(aluno);
+                    boolean inseriu  = armazenador.inserirAluno(aluno);
 
                     txtNome.setText("");
                     txtIdade.setText("");
@@ -85,8 +85,9 @@ public class CadAlunos extends JFrame {
                     txtRa.setText("");
                     txtCurso.setText("");
                     txtPeriodo.setText("");
-
-                    lblSucesso.setVisible(true);
+                    if(inseriu){
+                        lblSucesso.setVisible(true);
+                    }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(null, "Idade e Período devem ser números válidos.");
                 } catch (InputException ex) {
