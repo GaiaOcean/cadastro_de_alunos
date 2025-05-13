@@ -22,7 +22,7 @@ public class ArquivoTexto implements IPersistencia{
                     writer.write(aluno.getRg() + ";");
                     writer.write(aluno.getRa() + ";");
                     writer.write(aluno.getCurso() + ";");
-                    writer.write(aluno.getPeriodo() + "\n");  // Write on a single line, using semicolons as delimiters
+                    writer.write(aluno.getPeriodo() + "\n");  
                 }
             }
             System.out.println("Alunos salvos com sucesso em: " + nomeArquivo);
@@ -41,10 +41,10 @@ public class ArquivoTexto implements IPersistencia{
     
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = br.readLine()) != null) {  // Read line by line
-                String[] tokens = line.split(";");  // Split by the semicolon delimiter
+            while ((line = br.readLine()) != null) { 
+                String[] tokens = line.split(";");  
                 
-                if (tokens.length == 6) {  // We expect 6 fields per student
+                if (tokens.length == 6) { 
                     String nome = tokens[0];
                     int idade = Integer.parseInt(tokens[1]);
                     String rg = tokens[2];

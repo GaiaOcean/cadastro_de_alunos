@@ -118,11 +118,12 @@ public class CadAlunos extends JFrame {
 
                 // Voltar ao menu principal
                 dispose();
-                new Home().setVisible(true);
+               
             }
         });
     }
-
+    
+   
     private JTextField addLabeledField(String label, int y) {
         JLabel lbl = new JLabel(label);
         lbl.setFont(new Font("Calibri", Font.BOLD, 14));
