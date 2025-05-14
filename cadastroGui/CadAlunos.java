@@ -85,8 +85,13 @@ public class CadAlunos extends Stage {
             int periodo = Integer.parseInt(txtPeriodo.getText());
 
             Aluno aluno = new Aluno(nome, idade, rg, ra, curso, periodo);
-            armazenador.inserirAluno(aluno);
-
+            
+            if(!armazenador.inserirAluno(aluno)){
+                showAlert("Não há mais espaço para cadastro");
+            }else{
+                lblSucesso.setVisible(true);
+            }
+            
             txtNome.clear();
             txtIdade.clear();
             txtRg.clear();
@@ -94,7 +99,7 @@ public class CadAlunos extends Stage {
             txtCurso.clear();
             txtPeriodo.clear();
 
-            lblSucesso.setVisible(true);
+            
         } catch (NumberFormatException e) {
             showAlert("Idade e Período devem ser números válidos.");
         } catch (InputException e) {
@@ -113,15 +118,26 @@ public class CadAlunos extends Stage {
                     dialog.setHeaderText(null);
                     dialog.setContentText("Digite o nome do arquivo:");
                     dialog.showAndWait().ifPresent(nome -> {
+                    nome  = nome.trim();
+                    if (nome.isEmpty()) {
+                        showAlert("Por favor informe um nome válido. de arquivo inválido.");
+                        return;
+                    }
+                
+                    nome = InputException.validarNomeFile(nome);
+                    try{
                         ArquivoTexto arquivo = new ArquivoTexto();
                         arquivo.salvarTxt(armazenador, nome);
+                        showAlert("Arquivo salvo com sucesso!");
+                    }catch(Exception ex){
+                        showAlert("Erro ao salvar o arquivo: " + ex.getMessage());
+                    }
                     });
-                }
+                    }
             });
         }
 
         close();
-       // new Home().start(new Stage());
     }
 
     private void showAlert(String mensagem) {

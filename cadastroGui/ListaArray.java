@@ -27,16 +27,20 @@ public class ListaArray implements Armazenagem
    private void setLista(ArrayList <Aluno> lista){
        this.lista = lista;
    }
-   public void inserirAluno(Aluno aluno){
+   public boolean inserirAluno(Aluno aluno){
        lista.add(aluno);
+       return true;
    }
    
-   public void removerAluno(String ra){
+   public boolean removerAluno(String ra){
        int pos = buscarRa(ra);
 
        if(pos != -1){
            lista.remove(pos);
+           return true;
        }
+       return false;
+       
    }
    
    public int buscarRa(String ra){
@@ -48,10 +52,6 @@ public class ListaArray implements Armazenagem
                pos = i;
            }
            i++;
-       }
-       
-       if(pos == -1){
-           System.out.println("Ra "+ra+" não encontrado");
        }
        
        return pos;
@@ -74,8 +74,6 @@ public class ListaArray implements Armazenagem
 
            }
             System.out.println(list); 
-       }else{
-            System.out.println("Não existem alunos cadastrados"); 
        }
    }
    

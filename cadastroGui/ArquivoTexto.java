@@ -37,7 +37,6 @@ public class ArquivoTexto implements IPersistencia{
         File file = new File(nomeArquivo);
         
         if (!file.exists()) {
-            //System.out.println("Arquivo: " + nomeArquivo + " inexistente.");
             return false;
         }
     

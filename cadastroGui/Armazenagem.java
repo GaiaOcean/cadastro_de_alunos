@@ -7,8 +7,8 @@
  */
 public interface Armazenagem
 {
-   public void inserirAluno(Aluno aluno);
-   public void removerAluno(String ra);
+   public boolean inserirAluno(Aluno aluno);
+   public boolean removerAluno(String ra);
    public void mostrarLista();
    public int getTamanho();
    public int buscarRa(String ra);
