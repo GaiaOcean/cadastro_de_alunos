@@ -1,0 +1,86 @@
+#painel {
+    -fx-background-color: #94B4EB;
+    -fx-padding: 40px;
+    -fx-spacing: 20px;
+    -fx-alignment: top-center;
+}
+
+#titulo {
+    -fx-font-size: 22px;
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#conteudo {
+    -fx-spacing: 40px;
+    -fx-alignment: center;
+    
+}
+
+#imagem {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.5, 0, 0);
+}
+
+#botoes{
+    -fx-spacing: 15px;
+    -fx-alignment: center; 
+}
+
+#botoes-v{
+    -fx-spacing: 15px;
+    -fx-alignment: center;
+    -fr-pref-width: 200px;
+}
+
+
+
+#botao {
+    -fx-background-color: #5688DB;
+    -fx-text-fill: white;
+    -fx-font-family: "Calibri";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-pref-width: 136px;
+    -fx-pref-height: 34px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+#formulario {
+    -fx-padding: 10px 0;
+    -fx-alignment: center;
+}
+
+.label-form {
+    -fx-font-family: "Calibri";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.campo-form {
+    -fx-font-family: "Calibri";
+    -fx-font-size: 14px;
+    -fx-background-radius: 4px;
+    -fx-padding: 4px;
+}
+
+#org-texto {
+    -fx-pref-width: 337.5;
+}
+
+#org-numP {
+    -fx-pref-width: 112.5;
+}
+
+#org-numG {
+    -fx-pref-width: 225;
+}
+
+#sucesso {
+    -fx-font-family: "Calibri";
+    -fx-font-size: 13px;
+    -fx-font-style: italic;
+    -fx-text-fill: white;
+}

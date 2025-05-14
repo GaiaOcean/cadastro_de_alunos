@@ -12,39 +12,41 @@ public class ArquivoTexto implements IPersistencia{
 
     public void salvarTxt(Armazenagem armazenamento, String nomeArquivo) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
-            Aluno[] alunos = armazenamento.getAlunos();
-            int nAluno = 0;
-            for (Aluno aluno : alunos) {
-                if (aluno != null) {
-                    nAluno++;
-                    writer.write(aluno.getNome() + ";");
-                    writer.write(aluno.getIdade() + ";");
-                    writer.write(aluno.getRg() + ";");
-                    writer.write(aluno.getRa() + ";");
-                    writer.write(aluno.getCurso() + ";");
-                    writer.write(aluno.getPeriodo() + "\n");  
+            if(armazenamento != null){
+                Aluno[] alunos = armazenamento.getAlunos();
+                int nAluno = 0;
+                for (Aluno aluno : alunos) {
+                    if (aluno != null) {
+                        nAluno++;
+                        writer.write(aluno.getNome() + ";");
+                        writer.write(aluno.getIdade() + ";");
+                        writer.write(aluno.getRg() + ";");
+                        writer.write(aluno.getRa() + ";");
+                        writer.write(aluno.getCurso() + ";");
+                        writer.write(aluno.getPeriodo() + "\n");  // Write on a single line, using semicolons as delimiters
+                    }
                 }
             }
-            System.out.println("Alunos salvos com sucesso em: " + nomeArquivo);
+           
         } catch (IOException e) {
-            System.err.println("Erro ao salvar alunos: " + e.getMessage());
+            
         }
     }
 
-   public void carregarTxt(Armazenagem armazenamento, String nomeArquivo) {
+   public boolean carregarTxt(Armazenagem armazenamento, String nomeArquivo) {
         File file = new File(nomeArquivo);
         
         if (!file.exists()) {
-            System.out.println("Arquivo: " + nomeArquivo + " inexistente.");
-            return;
+            //System.out.println("Arquivo: " + nomeArquivo + " inexistente.");
+            return false;
         }
     
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
-            while ((line = br.readLine()) != null) { 
-                String[] tokens = line.split(";");  
+            while ((line = br.readLine()) != null) {  // Read line by line
+                String[] tokens = line.split(";");  // Split by the semicolon delimiter
                 
-                if (tokens.length == 6) { 
+                if (tokens.length == 6) {  // We expect 6 fields per student
                     String nome = tokens[0];
                     int idade = Integer.parseInt(tokens[1]);
                     String rg = tokens[2];
@@ -57,10 +59,10 @@ public class ArquivoTexto implements IPersistencia{
                     armazenamento.inserirAluno(aluno);  // Add the student to the storage
                 }
             }
-            System.out.println("Alunos carregados com sucesso de: " + nomeArquivo);
         } catch (IOException e) {
-            System.err.println("Erro ao carregar alunos: " + e.getMessage());
+            return false;
         }
+        return true;
     }
 
    

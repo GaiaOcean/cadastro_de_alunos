@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=ListaAlunos
+comment0.text=\r\n\ Escreva\ uma\ descri\u00E7\u00E3o\ da\ classe\ JavaFX\ ListaAlunos\ aqui.\r\n\r\n\ @author\ (seu\ nome\ aqui)\r\n\ @version\ (n\u00FAmero\ da\ vers\u00E3o\ ou\ data\ aqui)\r\n
+comment1.params=armazenador
+comment1.target=ListaAlunos(Armazenagem)
+comment2.params=
+comment2.target=void\ configurarColunas()
+comment3.params=item\ empty
+comment3.target=void\ updateItem(java.lang.Void,\ boolean)
+comment4.params=
+comment4.target=void\ atualizarDados()
+numComments=5

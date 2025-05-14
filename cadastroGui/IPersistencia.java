@@ -8,5 +8,5 @@
 public interface IPersistencia
 {
    public void salvarTxt(Armazenagem armazenamento, String nomeArquivo);
-   public void carregarTxt(Armazenagem armazenamento, String nomeArquivo);
+   public boolean carregarTxt(Armazenagem armazenamento, String nomeArquivo);
 }

@@ -1,207 +1,157 @@
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Image;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowAdapter;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
-public class Home extends JFrame {
+public class Home extends Application {
 
-    private JPanel contentPane;
     private Armazenagem armazenador = null;
+    private String tipo = null;
     private String nomeArquivo = null;
-    private CadAlunos janelaCadastro = null;
-    private String RA = null;
-    
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                Home frame = new Home();
-                frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Home");
+
+        Label lblTituloHome = new Label("Cadastro de Alunos Puc-SP");
+        lblTituloHome.setId("titulo");
+
+        ImageView imgLista = new ImageView();
+        imgLista.setId("imagem");
+        imgLista.setPreserveRatio(true);
+        imgLista.setSmooth(true);
+        imgLista.setFitWidth(75);
+        imgLista.setFitHeight(75);
+        try {
+            Image image = new Image(getClass().getResourceAsStream("/resources/pucsp.png"));
+            imgLista.setImage(image);
+        } catch (Exception e) {
+            imgLista.setImage(null);
+        }
+        
+        Button btnCadastrar = new Button("Cadastrar");
+        btnCadastrar.setId("botao");
+        btnCadastrar.setOnAction(e -> {
+            if(armazenador != null){
+                new CadAlunos(armazenador);
             }
         });
+
+        Button btnSalvar = new Button("Salvar");
+        btnSalvar.setId("botao");
+        btnSalvar.setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setHeaderText(null);
+            if(armazenador.getTamanho() == 0){
+                showAlert("Não há alunos cadastrados para salvar.");
+                return;
+            }
+            dialog.setContentText("Digite o nome do arquivo:");
+            dialog.showAndWait().ifPresent(nome -> {
+                nome = nome.trim();
+                if (nome.isEmpty()) {
+                    showAlert("Por favor informe um nome válido. de arquivo inválido.");
+                    return;
+                }
+                
+                nome = InputException.validarNomeFile(nome);
+                try{
+                    ArquivoTexto arquivo = new ArquivoTexto();
+                    arquivo.salvarTxt(armazenador, nome);
+                    showAlert("Arquivo salvo com sucesso!");
+                }catch(Exception ex){
+                    showAlert("Erro ao salvar o arquivo: " + ex.getMessage());
+                }
+                
+            });
+        });
+
+        Button btnRecuperar = new Button("Recuperar");
+        btnRecuperar.setId("botao");
+        btnRecuperar.setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setHeaderText(null);
+            dialog.setContentText("Digite o nome do arquivo:");
+            dialog.showAndWait().ifPresent(nome -> {
+                nome = nome.trim();
+                if (nome.isEmpty()) {
+                    showAlert("Por favor informe um nome válido.");
+                    return;
+                }
+                nome = InputException.validarNomeFile(nome);
+                
+                ArquivoTexto arquivo = new ArquivoTexto();
+                if(arquivo.carregarTxt(armazenador, nome)){
+                    showAlert("Alunos recuperados com sucesso!");
+                }else{
+                    showAlert("Erro ao recuperar " + nome + " talvez o arquivo não exista");
+                }
+                
+            });
+        });
+        
+        Button btnLista = new Button("Listar");
+        btnLista.setId("botao");
+        btnLista.setOnAction(e -> {
+            new ListaAlunos(armazenador);
+        });
+
+        Button btnSair = new Button("Sair");
+        btnSair.setId("botao");
+        btnSair.setOnAction(e -> System.exit(0));
+
+        VBox botoes = new VBox(btnCadastrar, btnSalvar,btnLista, btnRecuperar, btnSair);
+        botoes.setId("botoes-v");
+
+        HBox conteudo = new HBox(imgLista, botoes);
+        conteudo.setId("conteudo");
+
+        VBox painel = new VBox(lblTituloHome, conteudo);
+        painel.setId("painel");
+
+        Scene scene = new Scene(painel, 491, 420);
+        scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        receberTipo();
     }
 
-    public Home() {
-        setTitle("Home");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 491, 420); 
-        contentPane = new JPanel();
-        contentPane.setBackground(new Color(148, 180, 235));
-        contentPane.setBorder(new javax.swing.border.EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
-
-        JLabel lblTituloHome = new JLabel("Cadastro de Aunos Puc-SP");
-        lblTituloHome.setFont(new Font("Calibri", Font.BOLD, 22));
-        lblTituloHome.setForeground(Color.WHITE);
-        lblTituloHome.setBounds(120, 11, 250, 44);
-        contentPane.add(lblTituloHome);
-
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(148, 180, 235));
-        panel.setBorder(new LineBorder(new Color(86, 136, 219), 11, true));
-        panel.setBounds(33, 45, 414, 307);
-        contentPane.add(panel);
-        panel.setLayout(null);
-
-        JLabel imgLista = new JLabel("");
-        imgLista.setBounds(43, 60, 145, 145);
-        panel.add(imgLista);
-        try {
-            java.net.URL url = Home.class.getResource("pucsp.png");
-            if (url != null) {
-                ImageIcon icon = new ImageIcon(url);
-                Image scaledImage = icon.getImage().getScaledInstance(imgLista.getWidth(),
-                                                                      imgLista.getHeight(),
-                                                                      Image.SCALE_SMOOTH);
-                imgLista.setIcon(new ImageIcon(scaledImage));
-            } else {
-                imgLista.setText("Imagem não encontrada");
-            }
-        } catch (Exception e) {
-            imgLista.setText("Imagem não encontrada");
-        }
-
-        JButton btnCadastrar = new JButton("Cadastrar");
-        btnCadastrar.setBounds(222, 15, 136, 34);
-        panel.add(btnCadastrar);
-        btnCadastrar.setForeground(Color.WHITE);
-        btnCadastrar.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnCadastrar.setBackground(new Color(86, 136, 219));
-        btnCadastrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                
-                if(armazenador == null){
-                    String[] options = {"ArrayNormal", "ArrayLista"};
-                
-                    String tipo = (String) JOptionPane.showInputDialog(null,
-                            "Escolha o tipo de armazenagem",
-                            "Tipo de Armazenagem",
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            options,
-                            options[0]);
+    private void showAlert(String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
+    }
     
-                    if (tipo.equals("ArrayNormal")) {
-                        String inputQtd = JOptionPane.showInputDialog("Digite a quantidade de alunos:");
+    public void receberTipo(){
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("ArrayNormal", "ArrayNormal", "ArrayList");
+        dialog.setTitle("Tipo de Armazenagem");
+        dialog.setHeaderText(null);
+        dialog.setContentText("Escolha o tipo de armazenagem:");
+        dialog.showAndWait().ifPresent(tipo -> {
+            if ("ArrayNormal".equals(tipo)) {
+                    TextInputDialog inputDialog = new TextInputDialog();
+                    inputDialog.setHeaderText(null);
+                    inputDialog.setContentText("Digite a quantidade de alunos:");
+                    inputDialog.showAndWait().ifPresent(inputQtd -> {
                         try {
                             int qtd = Integer.parseInt(inputQtd);
                             armazenador = new ArrayNormal(qtd);
-                        } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, "Quantidade inválida.");
-                            return;
+                        } catch (NumberFormatException ex) {
+                            showAlert("Quantidade inválida.");
                         }
-                    } else if (tipo.equals("ArrayLista") || tipo.equals(null)){
-                        armazenador = new ListaArray();
-                    }
-    
-                    CadAlunos cadastro = new CadAlunos(armazenador);
-                    cadastro.setVisible(true);
-                    
-                }else{
-                    janelaCadastro = new CadAlunos(armazenador);
-                    janelaCadastro.setVisible(true);
+                    });
+                } else {
+                    armazenador = new ListaArray();
                 }
-                
-        
-        }
-    });
-
-        JButton btnRemoverAluno = new JButton("Remover Aluno");
-        btnRemoverAluno.setBounds(222, 55, 136, 34);
-        panel.add(btnRemoverAluno);
-        btnRemoverAluno.setForeground(Color.WHITE);
-        btnRemoverAluno.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnRemoverAluno.setBackground(new Color(86, 136, 219));
-        btnRemoverAluno.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                 
-                 RA = JOptionPane.showInputDialog("Digite o RA do aluno que deseja remover:");
-                
-                 boolean removido = armazenador.removerAluno(RA);
-                
-                 if(removido){
-                       JOptionPane.showMessageDialog(null, "Aluno removido com Sucesso");
-                 }else{
-                       JOptionPane.showMessageDialog(null, "Ra " + RA + "não encontrado");
-                 }
-                
-            }
         });
+    }
 
-        JButton btnSalvar = new JButton("Salvar");
-        btnSalvar.setBounds(222, 100, 136, 34);
-        panel.add(btnSalvar);
-        btnSalvar.setForeground(Color.WHITE);
-        btnSalvar.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnSalvar.setBackground(new Color(86, 136, 219));
-        btnSalvar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                  nomeArquivo = JOptionPane.showInputDialog("Digite o nome do arquivo:");
-                if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nome de arquivo inválido.");
-                    return;
-                }
-                ArquivoTexto arquivo = new ArquivoTexto();
-                try{
-                    arquivo.salvarTxt(armazenador, nomeArquivo.trim());
-                    JOptionPane.showMessageDialog(null, "Arquivo salvo com sucesso!");
-                }catch(Exception ex ){
-                    JOptionPane.showMessageDialog(null, "Erro ao salvar arquivo!");
-                }
-            }
-        });
-
-        JButton btnRecuperar = new JButton("Recuperar");
-        btnRecuperar.setBounds(222, 150, 136, 34);
-        panel.add(btnRecuperar);
-        btnRecuperar.setForeground(Color.WHITE);
-        btnRecuperar.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnRecuperar.setBackground(new Color(86, 136, 219));
-        btnRecuperar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                nomeArquivo = JOptionPane.showInputDialog("Digite o nome do arquivo:");
-                if (nomeArquivo == null || nomeArquivo.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Nome de arquivo inválido.");
-                    return;
-                }
-                
-                ArquivoTexto arquivo = new ArquivoTexto();
-                arquivo.carregarTxt(armazenador, nomeArquivo.trim());
-                JOptionPane.showMessageDialog(null, "Alunos recuperados com sucesso!");
-            }
-        });
-        
-        JButton btnMostrarAlunos = new JButton("Mostrar Alunos");
-        btnMostrarAlunos.setBounds(222, 200, 136, 34);
-        panel.add(btnMostrarAlunos);
-        btnMostrarAlunos.setForeground(Color.WHITE);
-        btnMostrarAlunos.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnMostrarAlunos.setBackground(new Color(86, 136, 219));
-        btnMostrarAlunos.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if(armazenador != null){
-                     armazenador.mostrarLista();
-                }else{
-                     JOptionPane.showMessageDialog(null, "Não existem alunos cadastrados");
-                }
-               
-            }
-        });
-
-        JButton btnSair = new JButton("Sair");
-        btnSair.setBounds(222, 250, 136, 34);
-        panel.add(btnSair);
-        btnSair.setForeground(Color.WHITE);
-        btnSair.setFont(new Font("Calibri", Font.BOLD, 13));
-        btnSair.setBackground(new Color(86, 136, 219));
-        btnSair.addActionListener(e -> System.exit(0));
+    public static void main(String[] args) {
+        launch(args);
     }
 }

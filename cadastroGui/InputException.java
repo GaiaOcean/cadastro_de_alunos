@@ -15,11 +15,11 @@ public class InputException extends Exception {
    }
     
 
-    public static String validarNomeFile(String nomeArquivo) throws InputException {
-        if (!nomeArquivo.endsWith(".txt")) {
-            throw new InputException("O nome do arquivo deve terminar com .txt");
-        }else{
-            return nomeArquivo;
+    public static String validarNomeFile(String nomeArquivo) {
+        if (!nomeArquivo.toLowerCase().endsWith(".txt")) {
+            nomeArquivo = nomeArquivo + ".txt";
         }
+        
+        return nomeArquivo;
     }
 }

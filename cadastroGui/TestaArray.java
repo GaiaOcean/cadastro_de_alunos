@@ -17,7 +17,7 @@ public class TestaArray
         Aluno aluno3 = new Aluno("Steh",12,"66666","1111","CC",3);
         alunos.inserirAluno(aluno3);*/
         //ArquivoTexto.salvarTxt(alunos, "alunos.txt");
-        arquivo.carregarTxt(alunos, "alunos.txt");
+        arquivo.carregarTxt(alunos, "alunos2.txt");
         alunos.mostrarLista();
         //alunos.mostrarLista();
     }

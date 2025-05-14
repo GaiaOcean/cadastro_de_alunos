@@ -1,141 +1,133 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.FileWriter;
-import java.io.IOException;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
-public class CadAlunos extends JFrame {
+public class CadAlunos extends Stage {
 
-    private JPanel contentPane;
-    private JTextField txtNome, txtIdade, txtRg, txtRa, txtCurso, txtPeriodo;
-    private JLabel lblSucesso;
+    private TextField txtNome, txtIdade, txtRg, txtRa, txtCurso, txtPeriodo;
+    private Label lblSucesso;
     private Armazenagem armazenador;
 
     public CadAlunos(Armazenagem armazenador) {
         this.armazenador = armazenador;
 
         setTitle("Cadastro de Aluno");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setBounds(100, 100, 500, 420);
-        contentPane = new JPanel();
-        contentPane.setBackground(new Color(102, 153, 204));
-        setContentPane(contentPane);
-        contentPane.setLayout(null);
 
-        JLabel lblTitulo = new JLabel("CADASTRO DE ALUNO");
-        lblTitulo.setForeground(Color.WHITE);
-        lblTitulo.setFont(new Font("Calibri", Font.BOLD, 24));
-        lblTitulo.setBounds(130, 20, 300, 30);
-        contentPane.add(lblTitulo);
+        Label lblTitulo = new Label("CADASTRO DE ALUNO");
+        lblTitulo.setId("titulo");
 
-        lblSucesso = new JLabel("ALUNO CADASTRADO COM SUCESSO!");
-        lblSucesso.setFont(new Font("Calibri", Font.ITALIC, 13));
-        lblSucesso.setBounds(130, 60, 250, 20);
+        lblSucesso = new Label("ALUNO CADASTRADO COM SUCESSO!");
+        lblSucesso.setId("sucesso");
         lblSucesso.setVisible(false);
-        contentPane.add(lblSucesso);
 
-        int y = 100;
-        int spacing = 40;
+        VBox campos = new VBox(5);
+        campos.setId("formulario");
+        
+        HBox t1 = new HBox(10);
+        HBox t2 = new HBox(10);
+        HBox t3 = new HBox(10);
+        
+        txtNome = addField(t1,"org-texto", "Nome:");
+        txtIdade = addField(t1,"org-numP", "Idade:");
+        txtRg = addField(t2,"org-numG", "RG:");
+        txtRa = addField(t2,"org-numG", "RA:");
+        txtCurso = addField(t3,"org-texto", "Curso:");
+        txtPeriodo = addField(t3, "org-numP", "Período:");
+        
+        campos.getChildren().addAll(t1,t2,t3);
 
-        txtNome = addLabeledField("Nome:", y);
-        txtIdade = addLabeledField("Idade:", y += spacing);
-        txtRg = addLabeledField("RG:", y += spacing);
-        txtRa = addLabeledField("RA:", y += spacing);
-        txtCurso = addLabeledField("Curso:", y += spacing);
-        txtPeriodo = addLabeledField("Período:", y += spacing);
+        Button btnCadastrar = new Button("Cadastrar");
+        btnCadastrar.setId("botao");
+        btnCadastrar.setOnAction(e -> cadastrarAluno());
 
-        // Painel para botões
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
-        buttonPanel.setBounds(130, y += spacing, 250, 40);
-        buttonPanel.setBackground(new Color(102, 153, 204));
-        contentPane.add(buttonPanel);
+        Button btnCancelar = new Button("Cancelar");
+        btnCancelar.setId("botao");
+        btnCancelar.setOnAction(e -> cancelar());
 
-        // Botão Cadastrar
-        JButton btnCadastrar = new JButton("Cadastrar");
-        btnCadastrar.setFont(new Font("Calibri", Font.BOLD, 14));
-        btnCadastrar.setBackground(new Color(51, 102, 153));
-        btnCadastrar.setForeground(Color.WHITE);
-        buttonPanel.add(btnCadastrar);
+        HBox botoes = new HBox(20, btnCadastrar, btnCancelar);
+        botoes.setId("botoes");
 
-        // Botão Cancelar
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.setFont(new Font("Calibri", Font.BOLD, 14));
-        btnCancelar.setBackground(new Color(51, 102, 153));
-        btnCancelar.setForeground(Color.WHITE);
-        buttonPanel.add(btnCancelar);
+        VBox root = new VBox(20, lblTitulo, lblSucesso, campos, botoes);
+        root.setId("painel");
 
-        // Ação do botão Cadastrar
-        btnCadastrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String nome = txtNome.getText();
-                    int idade = Integer.parseInt(txtIdade.getText());
-                    String rg = InputException.validarNumeroString(txtRg.getText(), "RG");
-                    String ra = InputException.validarNumeroString(txtRa.getText(), "RA");
-                    String curso = txtCurso.getText();
-                    int periodo = Integer.parseInt(txtPeriodo.getText());
+        Scene scene = new Scene(root, 500, 460);
+        scene.getStylesheets().add(getClass().getResource("/resources/style.css").toExternalForm());
 
-                    Aluno aluno = new Aluno(nome, idade, rg, ra, curso, periodo);
-                    boolean inseriu  = armazenador.inserirAluno(aluno);
-
-                    txtNome.setText("");
-                    txtIdade.setText("");
-                    txtRg.setText("");
-                    txtRa.setText("");
-                    txtCurso.setText("");
-                    txtPeriodo.setText("");
-                    if(inseriu){
-                        lblSucesso.setVisible(true);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(null, "Idade e Período devem ser números válidos.");
-                } catch (InputException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
-            }
-        });
-
-        // Ação do botão Cancelar
-        btnCancelar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (armazenador.getTamanho() > 0) {
-                    int escolha = JOptionPane.showConfirmDialog(
-                        CadAlunos.this,
-                        "Deseja salvar os dados antes de sair?",
-                        "Salvar dados",
-                        JOptionPane.YES_NO_OPTION
-                    );
-                    if (escolha == JOptionPane.YES_OPTION) {
-                        String nomeArquivo = JOptionPane.showInputDialog(
-                            CadAlunos.this,
-                            "Digite o nome do arquivo:"
-                        );
-                        ArquivoTexto arquivo = new ArquivoTexto();
-                        arquivo.salvarTxt(armazenador,nomeArquivo);
-                        
-                    }
-                }
-
-                // Voltar ao menu principal
-                dispose();
-               
-            }
-        });
+        setScene(scene);
+        show();
     }
-    
-   
-    private JTextField addLabeledField(String label, int y) {
-        JLabel lbl = new JLabel(label);
-        lbl.setFont(new Font("Calibri", Font.BOLD, 14));
-        lbl.setForeground(Color.WHITE);
-        lbl.setBounds(50, y, 100, 20);
-        contentPane.add(lbl);
 
-        JTextField textField = new JTextField();
-        textField.setFont(new Font("Calibri", Font.PLAIN, 14));
-        textField.setBounds(150, y, 250, 25);
-        contentPane.add(textField);
+    private TextField addField(HBox parent,String id, String labelText) {
+        Label label = new Label(labelText);
+        label.getStyleClass().add("label-form");
+
+        TextField textField = new TextField();
+        textField.getStyleClass().add("campo-form");
+        textField.setId(id);
+
+        VBox grupo = new VBox(6);
+        grupo.getChildren().addAll(label,textField);
+        
+        parent.getChildren().add(grupo);
         return textField;
+    }
+
+    private void cadastrarAluno() {
+        try {
+            String nome = txtNome.getText();
+            int idade = Integer.parseInt(txtIdade.getText());
+            String rg = InputException.validarNumeroString(txtRg.getText(), "RG");
+            String ra = InputException.validarNumeroString(txtRa.getText(), "RA");
+            String curso = txtCurso.getText();
+            int periodo = Integer.parseInt(txtPeriodo.getText());
+
+            Aluno aluno = new Aluno(nome, idade, rg, ra, curso, periodo);
+            armazenador.inserirAluno(aluno);
+
+            txtNome.clear();
+            txtIdade.clear();
+            txtRg.clear();
+            txtRa.clear();
+            txtCurso.clear();
+            txtPeriodo.clear();
+
+            lblSucesso.setVisible(true);
+        } catch (NumberFormatException e) {
+            showAlert("Idade e Período devem ser números válidos.");
+        } catch (InputException e) {
+            showAlert(e.getMessage());
+        }
+    }
+
+    private void cancelar() {
+        if (armazenador != null && armazenador.getTamanho() > 0) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Salvar dados");
+            alert.setContentText("Deseja salvar os dados antes de sair?");
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    TextInputDialog dialog = new TextInputDialog();
+                    dialog.setHeaderText(null);
+                    dialog.setContentText("Digite o nome do arquivo:");
+                    dialog.showAndWait().ifPresent(nome -> {
+                        ArquivoTexto arquivo = new ArquivoTexto();
+                        arquivo.salvarTxt(armazenador, nome);
+                    });
+                }
+            });
+        }
+
+        close();
+       // new Home().start(new Stage());
+    }
+
+    private void showAlert(String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }
